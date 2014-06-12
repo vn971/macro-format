@@ -1,19 +1,19 @@
-package net.pointsgame.debug
+package net.pointsgame.macros
 
 import scala.language.experimental.macros
 import scala.util.Try
 import scala.reflect.macros.blackbox.Context
 import scala.Some
 
-object Debug {
+object Macro {
 
 	/** this method prints the type of the body at compile time
 		* and has no effect on run time. */
-	def printType[T](t: => T): T = macro Debug.printType_impl[T]
+	def printType[T](t: => T): T = macro Macro.printType_impl[T]
 
-	def onlyInDebug[T](t: => T): Option[T] = macro Debug.onlyInDebug_impl[T]
+	def onlyInDebug[T](t: => T): Option[T] = macro Macro.onlyInDebug_impl[T]
 
-	def prettyPrint(params: Any*): String = macro Debug.prettyPrint_impl
+	def prettyPrint(params: Any*): String = macro Macro.prettyPrint_impl
 
 	def printType_impl[T: c.WeakTypeTag](c: Context)(t: c.Expr[T]): c.Expr[T] = {
 		System.out.println("expression " + t.tree.toString() + " has type [" + t.actualType + "]")

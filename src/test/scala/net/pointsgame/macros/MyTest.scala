@@ -1,14 +1,13 @@
-package net.pointsgame.debug
+package net.pointsgame.macros
 
 import utest._
-import net.pointsgame.debug.Debug._
-import net.pointsgame.debug.Debug.onlyInDebug
+import net.pointsgame.macros.Macro._
 
 object MyTest extends TestSuite {
 	val tests = TestSuite {
 
 		'onlyInDebugSimple {
-			// doesn't really test anything -- just shows use case
+			// doesn't really test anything -- just shows a use case
 			val someHeavyTree = List(4, 3, 2, 1)
 			onlyInDebug {
 				// TODO: explain what happens here!
@@ -29,7 +28,7 @@ object MyTest extends TestSuite {
 			assert(prettyPrint(null) == "null")
 			assert(prettyPrint(1, 2, null, null) == "1, 2, null, null")
 			assert(prettyPrint(1, "2", null, null) == "1, 2, null, null")
-			assert(prettyPrint(if (1 == 1) null else null) contains "if (true)")
+			assert(prettyPrint(if (1 == 1) null else null) contains "if ")
 		}
 
 		'prettyPrintWorksGood {
