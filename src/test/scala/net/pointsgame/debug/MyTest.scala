@@ -9,24 +9,12 @@ object MyTest extends TestSuite {
 
 		'onlyInDebugSimple {
 			// doesn't really test anything -- just shows use case
-			val someHeavyTree = List(1, 2, 3)
+			val someHeavyTree = List(4, 3, 2, 1)
 			onlyInDebug {
 				// TODO: explain what happens here!
 				println(someHeavyTree.sorted)
 			}
 		}
-
-//		'onlyInDebug {
-//			var i = 0
-//			val executedIfDebugOnly = onlyInDebug {
-//				i = 1
-//			}
-//			assert((executedIfDebugOnly, i) match {
-//				case (None, 0) => true // code eliminated at compile time
-//				case (Some(_), 1) => true // code was executed and returned Some()
-//				case _ => false
-//			})
-//		}
 
 		'printTypeDoesntFail {
 			printType("a" + 2)
