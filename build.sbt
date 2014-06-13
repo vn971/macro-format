@@ -16,6 +16,4 @@ fork := true
 
 testFrameworks += new TestFramework("utest.runner.JvmFramework")
 
-libraryDependencies ++= Seq(
-	"com.lihaoyi" %% "utest" % "0.1.4"
-)
+libraryDependencies += "com.lihaoyi" %% "utest" % "0.1.6"
