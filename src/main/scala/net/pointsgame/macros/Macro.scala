@@ -2,7 +2,7 @@ package net.pointsgame.macros
 
 import scala.language.experimental.macros
 import scala.util.Try
-import scala.reflect.macros.blackbox.Context
+import scala.reflect.macros.Context
 import scala.Some
 
 object Macro {
