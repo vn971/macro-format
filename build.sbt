@@ -4,7 +4,7 @@ name := "macro-format"
 
 version := "0.4"
 
-scalaVersion := "2.11.0"
+scalaVersion := "2.10.4"
 
 organization := "net.pointsgame"
 
