@@ -12,8 +12,17 @@ scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature")
 
 EclipseKeys.withSource := true
 
-fork := true
-
 testFrameworks += new TestFramework("utest.runner.JvmFramework")
 
 libraryDependencies += "com.lihaoyi" %% "utest" % "0.1.6"
+
+scala.scalajs.sbtplugin.ScalaJSPlugin.scalaJSSettings
+
+//(loadedTestFrameworks in Test) := {
+//	(loadedTestFrameworks in Test).value.updated(
+//		sbt.TestFramework(classOf[JsFramework].getName),
+//		new JsFramework(environment = (jsEnv in Test).value)
+//	)
+//}
+//
+//testLoader := JSClasspathLoader((execClasspath in Compile).value)
