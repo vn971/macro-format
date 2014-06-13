@@ -54,18 +54,18 @@ and compile a production server with "debug" disabled.
 
 ====How to use====
 
-For an SBT project with Scala-2.10, in your build.sbt or Boot.scala place:
+First, you have to choose a version, dependent on your own scala version and whether you use ScalaJs.
+If you use scala-2.10 and you don't use ScalaJS -- v0.5_scala2.10
+If you use scala-2.11 and you don't use ScalaJS -- v0.5_scala2.11
+If you use scala-2.10 and you do use ScalaJS -- v0.5_scala2.10_sjs0.5.0
+If you use scala-2.11 and you do use ScalaJS -- v0.5_scala2.11_sjs0.5.0
 
-	lazy val macroFormat = uri("git://gitorious.org/macro-format/macro-format.git#v0.4_scala2.10")
+Ok, so you chose your version, for example v0.5_scala2.11
+
+Now, add to your build.sbt or Boot.scala:
+
+	lazy val macroFormat = uri("git://gitorious.org/macro-format/macro-format.git#v0.5_scala2.11")
 	lazy val root = Project("root", file(".")).dependsOn(macroFormat)
-
-For an SBT project with Scala-2.11, in your build.sbt or Boot.scala place:
-
-	lazy val macroFormat = uri("git://gitorious.org/macro-format/macro-format.git#v0.4_scala2.11")
-	lazy val root = Project("root", file(".")).dependsOn(macroFormat)
-
-For a Maven project: download the repo, check-out the version you want,
-do a publish-local and include the dependency in your project.
 
 To use the macro itself:
 
@@ -73,12 +73,12 @@ To use the macro itself:
 	val a = 2
 	println(prettyFormat("hi", a + 1))
 
-
-====Further Plans====
-release a version for ScalaJs.
+For a Maven project you have to: clone the repo, check-out the version you want,
+do a publish-local and include the dependency in your project.
 
 
 ====Inspiration====
+
 The main source of inspiration is: https://github.com/adamw/scala-macro-debug
 Unfortunately, it has many disadvantages:
 
@@ -96,6 +96,16 @@ This is obviously wrong in a multi-threaded system.
 
 summing the above, I thought it would be useful to write my own implementation,
 and I hope it has its strong sides.
+
+
+====Other notes====
+
+Main git repo: https://gitorious.org/macro-format/macro-format
+Github mirror: ???
+
+(Gitorious is just a free software alternative to github.)
+
+I may add other simple-stupid macros in the future, if I find any that would be nice and useful.
 
 
 Copyright: Vasya Novikov. License: GPL v3.
