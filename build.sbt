@@ -1,8 +1,8 @@
 import com.typesafe.sbteclipse.core.EclipsePlugin.EclipseKeys
 
-name := "scala-macro-print"
+name := "macro-format"
 
-version := "1.0"
+version := "0.4"
 
 scalaVersion := "2.11.0"
 

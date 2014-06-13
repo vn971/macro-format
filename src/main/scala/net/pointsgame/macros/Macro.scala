@@ -8,31 +8,33 @@ import scala.Some
 object Macro {
 
 	/** this method prints the type of the body at compile time
-		* and has no effect on run time. */
+		* and has no effect at run time. */
 	def printType[T](t: => T): T = macro Macro.printType_impl[T]
 
-	def onlyInDebug[T](t: => T): Option[T] = macro Macro.onlyInDebug_impl[T]
+	def prettyFormat(params: Any*): String = macro Macro.prettyFormat_impl
 
-	def prettyPrint(params: Any*): String = macro Macro.prettyPrint_impl
+	def onlyWithCompileKey[T](body: T): Option[T] = macro Macro.onlyWithCompileKey_impl[T]
 
 	def printType_impl[T: c.WeakTypeTag](c: Context)(t: c.Expr[T]): c.Expr[T] = {
-		System.out.println("expression " + t.tree.toString() + " has type [" + t.actualType + "]")
+		System.out.println("Expression " + t.tree.toString() + " has type [" + t.actualType + "]")
 		t
 	}
 
-	def prettyPrint_impl(c: Context)(params: c.Expr[Any]*): c.Expr[String] = {
+	def prettyFormat_impl(c: Context)(params: c.Expr[Any]*): c.Expr[String] = {
 		import c.universe._
 		def strExpr(s: String) = c.Expr[String](Literal(Constant(s)))
 
 		val stringBuilderExpr = params.foldLeft {
-			// first boolean means "isHead", see below
+			// boolean means "isHead", see below
 			true -> reify(new scala.collection.mutable.StringBuilder)
 		} { case ((isHead, left), param) =>
 
 			val separatorAppended = if (isHead) left else reify(left.splice.append(", "))
 			val syntaxTreeAppended = param.tree match {
 				case Literal(Constant(_)) => separatorAppended
-				case _ => reify(separatorAppended.splice.append(strExpr(param.tree.toString()).splice).append(" = "))
+				case _ =>
+					val tree = strExpr(param.tree.toString().replace('\n', ' '))
+					reify(separatorAppended.splice.append(tree.splice).append(" = "))
 			}
 			val theValueAppended = reify(syntaxTreeAppended.splice.append(param.splice: Any))
 			false -> theValueAppended
@@ -41,17 +43,17 @@ object Macro {
 		reify(stringBuilderExpr._2.splice.toString())
 	}
 
-	def onlyInDebug_impl[T: c.WeakTypeTag](c: Context)(t: c.Expr[T]): c.Expr[Option[T]] = {
+	def onlyWithCompileKey_impl[T: c.WeakTypeTag](c: Context)(body: c.Expr[T]): c.Expr[Option[T]] = {
 		import c.universe._
 		if (macroDebugExecutionEnabled) {
-			reify(Some(t.splice))
+			reify(Some(body.splice))
 		} else {
 			reify(None)
 		}
 	}
 
 
-	private val macroDebugExecutionEnabled = !getCompileProperty("macro.debugExecution.enabled")
+	private val macroDebugExecutionEnabled = getCompileProperty("macro.compileWithDebug")
 	private val verboseMacroExpand = getCompileProperty("macro.verboseExpand")
 
 	private def getCompileProperty(p: String) = {

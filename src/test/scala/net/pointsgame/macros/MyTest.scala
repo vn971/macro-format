@@ -6,15 +6,6 @@ import net.pointsgame.macros.Macro._
 object MyTest extends TestSuite {
 	val tests = TestSuite {
 
-		'onlyInDebugSimple {
-			// doesn't really test anything -- just shows a use case
-			val someHeavyTree = List(4, 3, 2, 1)
-			onlyInDebug {
-				// TODO: explain what happens here!
-				println(someHeavyTree.sorted)
-			}
-		}
-
 		'printTypeDoesntFail {
 			printType("a" + null)
 			printType(null)
@@ -24,20 +15,32 @@ object MyTest extends TestSuite {
 		}
 
 		'prettyPrintSurvivesNulls {
-			assert(prettyPrint() == "")
-			assert(prettyPrint(null) == "null")
-			assert(prettyPrint(1, 2, null, null) == "1, 2, null, null")
-			assert(prettyPrint(1, "2", null, null) == "1, 2, null, null")
-			assert(prettyPrint(if (1 == 1) null else null) contains "if ")
+			assert(prettyFormat() == "")
+			assert(prettyFormat(null) == "null")
+			assert(prettyFormat(1, 2, null, null) == "1, 2, null, null")
+			assert(prettyFormat(if (1 == 1) null else null) contains "if ")
 		}
 
 		'prettyPrintWorksGood {
-			assert(prettyPrint("1") == "1")
-			assert(prettyPrint(1) == "1")
+			assert(prettyFormat(1, 2) == "1, 2")
+			assert(prettyFormat(1, "2") == "1, 2")
 
 			val a = 1
 			val b = 2
-			assert(prettyPrint(a + b) == "a.+(b) = 3")
+			assert(prettyFormat(a + b) == "a.+(b) = 3")
+
+			val bigger = prettyFormat(if (2 > 1) "bigger" else "not bigger")
+			assert(bigger contains "if (")
+			assert(bigger endsWith "bigger")
+		}
+
+		'onlyWithCompileKey {
+			// just test that the compiler won't crash.
+			// If you want usages and "why-to"-s, go to README.txt
+			val someHeavyTree = List(4, 3, 2, 1)
+			onlyWithCompileKey {
+				println(someHeavyTree.sorted)
+			}
 		}
 
 	}
