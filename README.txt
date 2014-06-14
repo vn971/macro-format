@@ -1,21 +1,7 @@
 ====Scala Macro Format====
 
 macro-format is a collection of small and useful macros for scala.
-Current version has 65 lines of code and includes:
-
-
-* `printType` macro.
-This may be useful if your IDE will get mad,
-but you still want to understand the type of a complex code. Examples:
-
-	val i = printType(1) // Expression 1 has type [Int(1)]
-	printType(i) // Expression i has type [Int]
-	val list = List(1,2,3)
-	val grouped = printType(list.groupBy(_ % 2)) // Expression list.groupBy[Int](((x$1: Int) => x$1.%(2))) has type [scala.collection.immutable.Map[Int,List[Int]]]
-	printType(grouped.get(0)) // Expression grouped.get(0) has type [Option[List[Int]]]
-
-The comment on the right is what the compiler will print while compiling.
-And you may see from usages and assignments that the macro has no effect at run time.
+Current version has 67 lines of code and includes:
 
 
 * a macro that is defined as `prettyFormat(params: Any*): String`
@@ -34,8 +20,22 @@ Example usages compared to a simple println:
 	prettyFormat(if (2 > 1) "bigger" else "not bigger")
 	println(s"if (2 > 1) \"bigger\" else \"not bigger\" = ${if (2 > 1) "bigger" else "not bigger"}")
 
-BTW, this macro doesn't really print anything, just returns a string,
-and that means you can put it inside your favorite logger.
+BTW, this macro doesn't really print anything, just returns a string.
+And that means you can put it inside your favorite logger.
+
+
+* `printType` macro.
+This may be useful if your IDE will get mad,
+but you still want to understand the type of a complex code. Examples:
+
+	val i = printType(1) // Expression 1 has type [Int(1)]
+	printType(i) // Expression i has type [Int]
+	val list = List(1,2,3)
+	val grouped = printType(list.groupBy(_ % 2)) // Expression list.groupBy[Int](((x$1: Int) => x$1.%(2))) has type [scala.collection.immutable.Map[Int,List[Int]]]
+	printType(grouped.get(0)) // Expression grouped.get(0) has type [Option[List[Int]]]
+
+The comment on the right is what the compiler will print while compiling.
+And you may see from usages and assignments that the macro has no effect at run time.
 
 
 * the last macro is very stupid and probably not useful at all :-)
