@@ -28,7 +28,7 @@ Example usages compared to a simple println:
 	println(s"i = $i")
 	prettyFormat(i) // yes, it will return "i = 1" !
 
-	prettyFormat("a user here ", user.id, user.name)
+	prettyFormat("a user here", user.id, user.name)
 	println(s"a user here, user.id() = ${user.id}, user.name() = ${user.name}")
 
 	prettyFormat(if (2 > 1) "bigger" else "not bigger")
