@@ -1,32 +1,26 @@
-====Scala Macro Format====
+==== Scala Macro Format ====
 
 macro-format is a collection of small and useful macros for scala.
-Current version has 67 lines of code and includes:
+Current version has 67 lines of code and has:
 
 
-* a macro that is defined as `prettyFormat(params: Any*): String`
-Example usages compared to a simple println:
+* a macro defined as `prettyFormat(params: Any*): String`
 
-	println("hi")
-	prettyFormat("hi")
+	prettyFormat("hi") // the macro will return the string "hi"
 
 	val i = 1
-	println(s"i = $i")
-	prettyFormat(i) // yes, it will return "i = 1" !
+	prettyFormat(i) // the macro will return the string "i = 1".
 
-	prettyFormat("a user here", user.id, user.name)
-	println(s"a user here, user.id() = ${user.id}, user.name() = ${user.name}")
+	prettyFormat("user here", user.id, user.name, user.isActivated, request.id)
+	// the macro will return the string
+	// "user here, user.id() = 1, user.name() = Bob, user.isActivated() = true, request.id() = 17"
 
-	prettyFormat(if (2 > 1) "bigger" else "not bigger")
-	println(s"if (2 > 1) \"bigger\" else \"not bigger\" = ${if (2 > 1) "bigger" else "not bigger"}")
-
-BTW, this macro doesn't really print anything, just returns a string.
-And that means you can put it inside your favorite logger.
+BTW, the macro has no side-effects so you can combine it with your favorite logger.
 
 
 * `printType` macro.
-This may be useful if your IDE will get mad,
-but you still want to understand the type of a complex code. Examples:
+This may be useful if your IDE got mad,
+but you still want to see the type of a complex code. Examples:
 
 	val i = printType(1) // Expression 1 has type [Int(1)]
 	printType(i) // Expression i has type [Int]
@@ -52,7 +46,7 @@ This gives you a possibility to wrap heavy debug code in this block,
 and compile a production server with "debug" disabled.
 
 
-====How to use====
+==== How to use ====
 
 First, you have to choose a version, dependent on your own scala version and whether you use ScalaJs.
 If you use scala-2.10 and you don't use ScalaJS -- v0.5_scala2.10
@@ -77,7 +71,7 @@ For a Maven project you have to: clone the repo, check-out the version you want,
 do a publish-local and include the dependency in your project.
 
 
-====Inspiration====
+==== Inspiration ====
 
 The main source of inspiration is: https://github.com/adamw/scala-macro-debug
 Unfortunately, it has many disadvantages:
@@ -98,7 +92,7 @@ summing the above, I thought it would be useful to write my own implementation,
 and I hope it has its strong sides.
 
 
-====Other notes====
+==== Other notes ====
 
 Main git repo: https://gitorious.org/macro-format/macro-format
 Github mirror: https://github.com/vn971/macro-format
