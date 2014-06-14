@@ -101,7 +101,7 @@ and I hope it has its strong sides.
 ====Other notes====
 
 Main git repo: https://gitorious.org/macro-format/macro-format
-Github mirror: ???
+Github mirror: https://github.com/vn971/macro-format
 
 (Gitorious is just a free software alternative to github.)
 
