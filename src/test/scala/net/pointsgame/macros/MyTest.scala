@@ -14,7 +14,7 @@ object MyTest extends TestSuite {
 			val b = 2
 			assert(prettyFormat(a + b) == "a.+(b) = 3")
 
-			val bigger = prettyFormat(if (2 > 1) "bigger" else "not bigger")
+			val bigger = prettyFormat(if (2 > 1) "bigger" else "less than expected")
 			assert(bigger contains "if (")
 			assert(bigger endsWith "bigger")
 		}

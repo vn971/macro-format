@@ -25,7 +25,9 @@ but you still want to see the type of a complex code. Examples:
 	val i = printType(1) // Expression 1 has type [Int(1)]
 	printType(i) // Expression i has type [Int]
 	val list = List(1,2,3)
+
 	val grouped = printType(list.groupBy(_ % 2)) // Expression list.groupBy[Int](((x$1: Int) => x$1.%(2))) has type [scala.collection.immutable.Map[Int,List[Int]]]
+
 	printType(grouped.get(0)) // Expression grouped.get(0) has type [Option[List[Int]]]
 
 The comment on the right is what the compiler will print while compiling.
@@ -74,7 +76,7 @@ do a publish-local and include the dependency in your project.
 ==== Inspiration ====
 
 The main source of inspiration is: https://github.com/adamw/scala-macro-debug
-Unfortunately, it has many disadvantages:
+However:
 
 * it has no method `printType`, which I find useful :P
 
@@ -92,14 +94,29 @@ summing the above, I thought it would be useful to write my own implementation,
 and I hope it has its strong sides.
 
 
+==== Future plans ====
+
+I may add other simple-stupid macros in the future, if I find any that would be nice and useful.
+Few things that I have in mind:
+
+* a macro that allows you to print the class and line number _from which the macro was called_.
+That is possible, the only thing is to implement it.)
+
+* a macro based on string-interpolators. So you could write, for example:
+
+pretty"hello there, my name is $name, and here's information about me: $$status, $${user.id} $${request.id} $${user.isActivated}"
+
+Benefits of such approach would be: simpler to read, simpler to write,
+in-lined source code could possibly be returned as-is, not converted
+to AST (we would have "user.id = " insdead of "user.id() = ")
+
+
 ==== Other notes ====
 
 Main git repo: https://gitorious.org/macro-format/macro-format
 Github mirror: https://github.com/vn971/macro-format
 
 (Gitorious is just a free software alternative to github.)
-
-I may add other simple-stupid macros in the future, if I find any that would be nice and useful.
 
 
 Copyright: Vasya Novikov. License: GPL v3.
