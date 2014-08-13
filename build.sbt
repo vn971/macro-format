@@ -2,7 +2,7 @@ import com.typesafe.sbteclipse.core.EclipsePlugin.EclipseKeys
 
 name := "macro-format"
 
-version := "0.5"
+version := "0.6"
 
 scalaVersion := "2.11.1"
 
