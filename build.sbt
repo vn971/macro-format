@@ -2,7 +2,7 @@ import com.typesafe.sbteclipse.core.EclipsePlugin.EclipseKeys
 
 name := "macro-format"
 
-version := "0.4"
+version := "0.6"
 
 scalaVersion := "2.10.4"
 
@@ -14,7 +14,7 @@ EclipseKeys.withSource := true
 
 testFrameworks += new TestFramework("utest.runner.JvmFramework")
 
-libraryDependencies += "com.lihaoyi" %% "utest" % "0.1.6"
+libraryDependencies += "com.lihaoyi" %% "utest" % "0.1.6" % Test
 
 scala.scalajs.sbtplugin.ScalaJSPlugin.scalaJSSettings
 
@@ -26,3 +26,7 @@ scala.scalajs.sbtplugin.ScalaJSPlugin.scalaJSSettings
 //}
 //
 //testLoader := JSClasspathLoader((execClasspath in Compile).value)
+
+libraryDependencies += "org.scala-lang" % "scala-reflect" % "2.10.4"
+
+conflictManager := ConflictManager("strict", "org.scala-lang" , "scala-reflect")
