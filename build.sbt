@@ -16,4 +16,8 @@ EclipseKeys.withSource := true
 
 testFrameworks += new TestFramework("utest.runner.JvmFramework")
 
-libraryDependencies += "com.lihaoyi" %% "utest" % "0.1.6"
+libraryDependencies += "com.lihaoyi" %% "utest" % "0.1.6" % Test
+
+libraryDependencies += "org.scala-lang" % "scala-reflect" % "2.11.1"
+
+conflictManager := ConflictManager("strict", "org.scala-lang" , "scala-reflect")
