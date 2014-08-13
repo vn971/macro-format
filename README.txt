@@ -1,41 +1,37 @@
-====Scala Macro Format====
+==== Scala Macro Format ====
 
 macro-format is a collection of small and useful macros for scala.
-Current version has 65 lines of code and includes:
+Current version has 67 lines of code and has:
+
+
+* a macro defined as `prettyFormat(params: Any*): String`
+
+	prettyFormat("hi") // the macro will return the string "hi"
+
+	val i = 1
+	prettyFormat(i) // the macro will return the string "i = 1".
+
+	prettyFormat("user here", user.id, user.name, user.isActivated, request.id)
+	// the macro will return the string
+	// "user here, user.id() = 1, user.name() = Bob, user.isActivated() = true, request.id() = 17"
+
+BTW, the macro has no side-effects so you can combine it with your favorite logger.
 
 
 * `printType` macro.
-This may be useful if your IDE will get mad,
-but you still want to understand the type of a complex code. Examples:
+This may be useful if your IDE got mad,
+but you still want to see the type of a complex code. Examples:
 
 	val i = printType(1) // Expression 1 has type [Int(1)]
 	printType(i) // Expression i has type [Int]
 	val list = List(1,2,3)
+
 	val grouped = printType(list.groupBy(_ % 2)) // Expression list.groupBy[Int](((x$1: Int) => x$1.%(2))) has type [scala.collection.immutable.Map[Int,List[Int]]]
+
 	printType(grouped.get(0)) // Expression grouped.get(0) has type [Option[List[Int]]]
 
 The comment on the right is what the compiler will print while compiling.
 And you may see from usages and assignments that the macro has no effect at run time.
-
-
-* a macro that is defined as `prettyFormat(params: Any*): String`
-Example usages compared to a simple println:
-
-	println("hi")
-	prettyFormat("hi")
-
-	val i = 1
-	println(s"i = $i")
-	prettyFormat(i) // yes, it will return "i = 1" !
-
-	prettyFormat("a user here ", user.id, user.name)
-	println(s"a user here, user.id() = ${user.id}, user.name() = ${user.name}")
-
-	prettyFormat(if (2 > 1) "bigger" else "not bigger")
-	println(s"if (2 > 1) \"bigger\" else \"not bigger\" = ${if (2 > 1) "bigger" else "not bigger"}")
-
-BTW, this macro doesn't really print anything, just returns a string,
-and that means you can put it inside your favorite logger.
 
 
 * the last macro is very stupid and probably not useful at all :-)
@@ -52,20 +48,20 @@ This gives you a possibility to wrap heavy debug code in this block,
 and compile a production server with "debug" disabled.
 
 
-====How to use====
+==== How to use ====
 
-For an SBT project with Scala-2.10, in your build.sbt or Boot.scala place:
+First, you have to choose a version, dependent on your own scala version and whether you use ScalaJs.
+If you use scala-2.10 and you don't use ScalaJS -- v0.5_scala2.10
+If you use scala-2.11 and you don't use ScalaJS -- v0.5_scala2.11
+If you use scala-2.10 and you do use ScalaJS -- v0.5_scala2.10_sjs0.5.0
+If you use scala-2.11 and you do use ScalaJS -- v0.5_scala2.11_sjs0.5.0
 
-	lazy val macroFormat = uri("git://gitorious.org/macro-format/macro-format.git#v0.4_scala2.10")
+Ok, so you chose your version, for example v0.5_scala2.11
+
+Now, add to your build.sbt or Boot.scala:
+
+	lazy val macroFormat = uri("git://gitorious.org/macro-format/macro-format.git#v0.5_scala2.11")
 	lazy val root = Project("root", file(".")).dependsOn(macroFormat)
-
-For an SBT project with Scala-2.11, in your build.sbt or Boot.scala place:
-
-	lazy val macroFormat = uri("git://gitorious.org/macro-format/macro-format.git#v0.4_scala2.11")
-	lazy val root = Project("root", file(".")).dependsOn(macroFormat)
-
-For a Maven project: download the repo, check-out the version you want,
-do a publish-local and include the dependency in your project.
 
 To use the macro itself:
 
@@ -73,14 +69,14 @@ To use the macro itself:
 	val a = 2
 	println(prettyFormat("hi", a + 1))
 
+For a Maven project you have to: clone the repo, check-out the version you want,
+do a publish-local and include the dependency in your project.
 
-====Further Plans====
-release a version for ScalaJs.
 
+==== Inspiration ====
 
-====Inspiration====
 The main source of inspiration is: https://github.com/adamw/scala-macro-debug
-Unfortunately, it has many disadvantages:
+However:
 
 * it has no method `printType`, which I find useful :P
 
@@ -96,6 +92,31 @@ This is obviously wrong in a multi-threaded system.
 
 summing the above, I thought it would be useful to write my own implementation,
 and I hope it has its strong sides.
+
+
+==== Future plans ====
+
+I may add other simple-stupid macros in the future, if I find any that would be nice and useful.
+Few things that I have in mind:
+
+* a macro that allows you to print the class and line number _from which the macro was called_.
+That is possible, the only thing is to implement it.)
+
+* a macro based on string-interpolators. So you could write, for example:
+
+pretty"hello there, my name is $name, and here's information about me: $$status, $${user.id} $${request.id} $${user.isActivated}"
+
+Benefits of such approach would be: simpler to read, simpler to write,
+in-lined source code could possibly be returned as-is, not converted
+to AST (we would have "user.id = " insdead of "user.id() = ")
+
+
+==== Other notes ====
+
+Main git repo: https://gitorious.org/macro-format/macro-format
+Github mirror: https://github.com/vn971/macro-format
+
+(Gitorious is just a free software alternative to github.)
 
 
 Copyright: Vasya Novikov. License: GPL v3.
