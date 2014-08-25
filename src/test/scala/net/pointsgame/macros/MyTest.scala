@@ -27,11 +27,21 @@ object MyTest extends TestSuite {
 		}
 
 		'printTypeDoesntFail {
-			printType("a" + null)
-			printType(null)
+			val i = 1
+			typePrint(i)
+			typePrint("a" + null)
+			typePrint(null)
 		}
 		'printType {
-			assert(printType(1 + 2) == 3)
+			assert(typePrint(1 + 2) == 3)
+		}
+
+		'prettyPrintDoesntFail {
+			prettyPrint()
+			prettyPrint(1, 2)
+			prettyPrint(null)
+			prettyPrint("1" + 2)
+			prettyPrint(if (1 == 1) null else null)
 		}
 
 		'onlyWithCompileKey {
