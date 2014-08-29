@@ -1,8 +1,15 @@
 package net.pointsgame.macros
 
+import java.text.SimpleDateFormat
+import java.util.Date
 import scala.language.experimental.macros
 import scala.reflect.macros.Context
 import scala.util.Try
+
+trait LogEvidence {
+	def apply(file: String, lineNumber: Int, formattedMessage: String): Unit
+}
+
 
 object Macro {
 
@@ -12,8 +19,9 @@ object Macro {
 	def prettyPrint(params: Any*): Unit = macro Macro.prettyPrint_impl
 	def prettyPrint_impl(c: Context)(params: c.Expr[Any]*): c.Expr[Unit] = new Helper[c.type](c).prettyPrint(params: _*)
 
-	/** this method prints the type of the body at compile time
-		* and has no effect at run time. */
+	def prettyLog(params: Any*)(implicit logger: LogEvidence): Unit = macro Macro.prettyLog_impl
+	def prettyLog_impl(c: Context)(params: c.Expr[Any]*)(logger: c.Expr[LogEvidence]): c.Expr[Unit] = new Helper[c.type](c).prettyLog(params: _*)(logger)
+
 	def typePrint[T](t: => T): T = macro Macro.printType_impl[T]
 	def printType_impl[T: c.WeakTypeTag](c: Context)(t: c.Expr[T]): c.Expr[T] = new Helper[c.type](c).printType(t)
 
@@ -29,15 +37,15 @@ object Macro {
 
 
 	private val macroDebugExecutionEnabled = getCompileProperty("macro.compileWithDebug")
-	private val verboseMacroExpand = getCompileProperty("macro.verboseExpand")
 
-	private def getCompileProperty(p: String) = {
+	private def getCompileProperty(prop: String) = {
 		def asBool(s: String) = Try(s.toBoolean).toOption
-		sys.props.get(p).flatMap(asBool).
-				orElse(sys.env.get(p).flatMap(asBool)).
+		sys.props.get(prop).flatMap(asBool).
+				orElse(sys.env.get(prop).flatMap(asBool)).
 				getOrElse(false)
 	}
 
+	private[macros] val formatter = new SimpleDateFormat("HH:mm:ss.SSS")
 
 	/**
 	 * This is a common technique to reuse macro methods within a project,
@@ -71,12 +79,19 @@ object Macro {
 				val theValueAppended = reify(syntaxTreeAppended.splice.append(param.splice: Any))
 				false -> theValueAppended
 			}
-			if (verboseMacroExpand) println(reify(stringBuilderExpr._2.splice.toString()))
 			reify(stringBuilderExpr._2.splice.toString())
 		}
 
 		def prettyPrint(params: c.Expr[Any]*): c.Expr[Unit] =
-			reify(println(strExpr(fileLineNumber).splice + " " + prettyFormat(params: _*).splice))
+			reify(println(formatter.format(new Date()) + " " + strExpr(fileLineNumber).splice + "  " + prettyFormat(params: _*).splice))
+
+		def prettyLog(params: c.Expr[Any]*)(logger: c.Expr[LogEvidence]): c.Expr[Unit] = {
+			reify(logger.splice.apply(
+				strExpr(c.enclosingPosition.source.file.name).splice,
+				c.Expr[Int](Literal(Constant(c.enclosingPosition.line))).splice,
+				prettyFormat(params: _*).splice
+			))
+		}
 
 	}
 
