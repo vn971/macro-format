@@ -45,7 +45,7 @@ object Macro {
 				getOrElse(false)
 	}
 
-	private[macros] val formatter = new SimpleDateFormat("HH:mm:ss.SSS")
+	val formatter = new SimpleDateFormat("HH:mm:ss.SSS")
 
 	/**
 	 * This is a common technique to reuse macro methods within a project,
