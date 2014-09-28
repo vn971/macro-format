@@ -1,123 +1,61 @@
 package net.pointsgame.macros
 
-import net.pointsgame.macros.Macro._
+import net.pointsgame.macros.CustomLoggerExamples._
+import net.pointsgame.macros.Loggable._
 import utest._
 
+
+/** These are tests. If you want code examples -- see other files in this directory. */
 object MyTest extends TestSuite {
 	val tests = TestSuite {
-		val a = 1
-		val b = 2
+		val a = 2
+		val b = 3
 
-		'prettyFormat {
-			'worksGoodInEasyCases {
-				assert(prettyFormat(1, 2) == "1, 2")
-				assert(prettyFormat(1, "2") == "1, 2")
+		'easy_cases {
+			implicit def implicitLogToString = logToString
+			assert(log(2, 3) endsWith "2, 3")
+			assert(log(2, "3") endsWith "2, 3")
+			assert(log(a + b) endsWith "a.+(b) = 5")
+		}
 
-				assert(prettyFormat(a + b) == "a.+(b) = 3")
+		'does_not_crash {
+			log()(logToString)
+			log(null, null, "", null, null)(logToString)
+		}
 
-				val result = prettyFormat(if (2 > 1) "bigger" else "less than expected")
-				assert(result contains "if (")
-				assert(result endsWith "bigger")
+		'if_statement {
+			val result = log(if (2 > 1) "2" else "1")(logToString)
+			assert(result contains "if (")
+			assert(result endsWith "= 2")
+		}
+
+		'usage_as_extractor {
+			val extractionLogger = new CustomLogger[(String, Int, Seq[ParamInfo])] {
+				override def apply(file: String, line: Int, params: Seq[ParamInfo]) = (file, line, params)
 			}
 
-			'survivesNulls {
-				assert(prettyFormat() == "")
-				assert(prettyFormat(null) == "null")
-				assert(prettyFormat(1, 2, null, null) == "1, 2, null, null")
-				assert(prettyFormat(if (1 == 1) null else null) contains "if ")
+			val hello = "hello"
+			val first = log(hello, a, 2)(extractionLogger)
+			val second = log(hello, a, 2)(extractionLogger)
+
+			'file_name {
+				assert(first._1 == "MyTest.scala")
+			}
+			'line_number {
+				assert(first._2 > 10)
+				assert(second._2 < 300)
+				assert(second._2 == first._2 + 1) // each `log` has its own line number!
+			}
+			'types {
+				val firstTypes = first._3.map(_.actualType)
+				assert(firstTypes == Seq("String", "Int", "Int(2)"))
 			}
 		}
 
-
-		'prettyPrint {
-			// this method just prints to System.out, and we don't test that.
-			// if you want a more complex and tested version, see the `prettyLog`
-
-			// note that if you don't need any complexities, "prettyPrint" may be right for you.
-			prettyPrint()
-			prettyPrint(1, 2)
-			prettyPrint(null)
-			prettyPrint(if (1 == 1) null else null)
-
-			prettyPrint(a + b)
-			// the last line will print this to S
-		}
-
-		'prettyLog {
-			// the "logger" method is a complex version of "prettyPrint".
-			// it allows the library to handle WHAT to print,
-			// and your custom code to do the actual printing (or any side-effect).
-			//
-			// As you can see in this test, we perform a side-effect in our custom code
-			// and check if it was applied later.
-
-			var theOutput = ""
-
-			implicit val logger = new LogEvidence {
-				override def apply(file: String, line: Int, msg: String): Unit = {
-					theOutput = file + ":" + line.toString + "  " + msg
-				}
-			}
-
-			prettyLog("hello from my custom logger")
-			assert(theOutput matches "MyTest.scala:[0-9]+  hello from my custom logger")
-
-			// You may ask why it's so complex, why would we need to use _implicit_ things.
-			// The answer is that it's a Scala limitation. Basically, Scala doesn't allow this:
-			//     def myMacro(params: Any*): String
-			//     def myLogger(s: String): Unit
-			//     def resultingSmartLogger(params: Any*) = myLogger(myMacro(params: _*))
-			// Unfortunately, the last line will not compile.
-			// We would also lose file name and line number if we would work with the macro like that.
-			//
-			// to avoid this limitation, we let the macro method be invoked
-			// but ask the user to supply a method that does side effects.
-		}
-
-
-		'typePrint {
-			// This helps if your IDE got mad,
-			// but you still want to understand the type of a complex code.
-
-			'HasNoEffectsAfterCompilation {
-				assert(typePrint(a + b) == 3)
-				// during compilation, you will see this in your terminal:
-				// MyTest.scala:37 expression has type Int
-			}
-			'staysAlive {
-				val i = 1
-				typePrint(i)
-				typePrint("a" + null)
-				typePrint(null)
-			}
-			'moreExamples {
-				val list = List(1, 2, 3)
-				val grouped = typePrint(list.groupBy(_ % 2))
-				// MyTest.scala:50 expression has type scala.collection.immutable.Map[Int,List[Int]]
-
-				typePrint(grouped.get(1))
-				// MyTest.scala:53 expression has type Option[List[Int]]
-			}
-		}
-
-
-		'onlyWithCompileKey {
-			// By default, the code inside is just eliminated completely.
-			onlyWithCompileKey(println("PANIC!!!"))
-
-			// so, normally, when you invoke this test, you won't see any "PANIC".
-			// It would not even be in the byte-code.
-
-			// But if, while compiling, you will set System.property "macro.compileWithDebug" to "true",
-			// then your "body" goes straight to the generated byte-code.
-			// So, you have an option to eliminate some of the code at compilation phase.
-			// This gives you a possibility to wrap heavy debug code in this block,
-			// and compile a production server with "debug" disabled (with zero performance loss).
-
-			val someHeavyTree = List(4, 3, 2, 1)
-			onlyWithCompileKey {
-				println(someHeavyTree.sorted)
-			}
+		'hobby_project_example {
+			import net.pointsgame.macros.SimpleLog._
+			// import the SimpleLog and you're ready to go:
+			log(a, b, "hello", a + b)
 		}
 
 	}

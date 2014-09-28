@@ -1,8 +1,8 @@
 import com.typesafe.sbteclipse.core.EclipsePlugin.EclipseKeys
 
-name := "macro-format"
+name := "scala-macro-log"
 
-version := "0.6"
+version := "0.7"
 
 scalaVersion := "2.11.1"
 
