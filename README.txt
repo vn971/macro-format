@@ -46,27 +46,11 @@ the macro-expanded output of a logging invocation:
 Get Started
 ========
 
-First, choose your version.
-If you use scala-2.10 and you don't use ScalaJS -- v0.6_scala2.10
-If you use scala-2.11 and you don't use ScalaJS -- v0.6_scala2.11
-If you use scala-2.10 and you do use ScalaJS -- v0.6_scala2.10_sjs0.5.0
-If you use scala-2.11 and you do use ScalaJS -- v0.6_scala2.11_sjs0.5.0
-
-Ok, so you chose your version, for example v0.6_scala2.11
-
-Now, add this to your build.sbt or Boot.scala:
-
-	lazy val macroFormat = uri("git://gitorious.org/macro-format/macro-format.git#v0.6_scala2.11")
-	lazy val root = Project("root", file(".")).dependsOn(macroFormat)
-
-You can now use the macro itself:
+TODO: register on bintray / maven central / sonatype and update the README after that..
 
 	import net.pointsgame.macros.SimpleLog._
 	val a = 2
 	prettyFormat("hi", a + 1)
-
-For a Maven project you have to: clone the repo, check-out the version you want,
-do a publish-local and include the dependency in your project.
 
 
 FAQ
