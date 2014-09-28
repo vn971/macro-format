@@ -97,7 +97,7 @@ It's a library that does macro-logging, too. How do we differ?
 
 * macro invocation of `debug(1,2)` in the origin project got expanded to:
 	print(1); print(", "); println(2);
-This is obviously wrong in a multi-threaded system.
+Which is obviously wrong in a multi-threaded system.
 Our implementation keeps the parameters together.
 
 Summing the above, I thought it would be useful to write my own implementation,

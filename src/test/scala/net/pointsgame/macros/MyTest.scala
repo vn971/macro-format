@@ -21,6 +21,7 @@ object MyTest extends TestSuite {
 		'does_not_crash {
 			log()(logToString)
 			log(null, null, "", null, null)(logToString)
+			()
 		}
 
 		'if_statement {
