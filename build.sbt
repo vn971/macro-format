@@ -2,9 +2,11 @@ import com.typesafe.sbteclipse.core.EclipsePlugin.EclipseKeys
 
 name := "scala-macro-log"
 
-version := "0.7"
+version := "0.8"
 
 scalaVersion := "2.11.1"
+
+crossScalaVersions := Seq("2.11.1", "2.10.4")
 
 organization := "net.pointsgame"
 
@@ -18,6 +20,6 @@ testFrameworks += new TestFramework("utest.runner.JvmFramework")
 
 libraryDependencies += "com.lihaoyi" %% "utest" % "0.1.6" % Test
 
-libraryDependencies += "org.scala-lang" % "scala-reflect" % "2.11.1"
+libraryDependencies <+= (scalaVersion)("org.scala-lang" % "scala-reflect" % _)
 
-conflictManager := ConflictManager("strict", "org.scala-lang" , "scala-reflect")
+conflictManager := ConflictManager("strict")
