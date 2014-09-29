@@ -40,7 +40,7 @@ the macro-expanded output of a logging invocation:
 	customLogger("MyTest.scala", 31, Seq(
 		ParamInfo(i, "i", "Int", isConstant = false),
 		ParamInfo(user.id, "user.id()", "Long", isConstant = false)
-	))
+	))  // the only things varying at run-time are `i` and `user.id`
 
 
 Get Started

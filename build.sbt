@@ -10,7 +10,7 @@ crossScalaVersions := Seq("2.11.2", "2.10.4")
 
 organization := "net.pointsgame"
 
-name := "logging with additional information from the Scala compiler"
+description := "logging with additional information from the Scala compiler"
 
 scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature")
 
