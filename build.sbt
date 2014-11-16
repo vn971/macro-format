@@ -2,7 +2,7 @@ import com.typesafe.sbteclipse.core.EclipsePlugin.EclipseKeys
 
 name := "scala-macro-log"
 
-version := "0.9"
+version := "0.9.1"
 
 scalaVersion := "2.11.2"
 

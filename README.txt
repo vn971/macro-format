@@ -1,7 +1,7 @@
 About
 ========
 
-This library gives you logging with additional information from the Scala compiler. That includes:
+This is a logging library that gives additional information from the Scala compiler. That includes:
 
  * The file name AND the line number, like "MySomething.scala:242"
 Think for yourself if this would help you.
@@ -40,7 +40,7 @@ the macro-expanded output of a logging invocation:
 	customLogger("MyTest.scala", 31, Seq(
 		ParamInfo(i, "i", "Int", isConstant = false),
 		ParamInfo(user.id, "user.id()", "Long", isConstant = false)
-	))  // the only things varying at run-time are `i` and `user.id`
+	))  // the things varying at run-time are `i` and `user.id`
 
 
 Get Started
@@ -48,9 +48,15 @@ Get Started
 
 TODO: register on bintray / maven central / sonatype and update the README after that..
 
+To use the project you currently have to:
+* git-clone the project
+* go `sbt +publishLocal` to publish the artifacts locally
+* add the dependency: "net.pointsgame" %% "scala-macro-log" % "0.9"
+
+The library itself can be used after a single import statement:
 	import net.pointsgame.macros.SimpleLog._
-	val a = 2
-	prettyFormat("hi", a + 1)
+	val a = 1
+	prettyFormat("look who we have here", a + 2)
 
 
 FAQ
@@ -60,7 +66,7 @@ Are there performance penalties?
 	a `scala.collection.Seq` would be constructed,
 	and one `ParamInfo` for each of the parameters.
 	The contents of the `Seq` and `ParamInfo` are pre-filled after compilation,
-	so there are absolutely no additional operations above that.
+	so there are no additional operations above that.
 	My personal point of view is that it's not much, but think for yourself, I gave you the details.
 
 Could it be simpler?
@@ -91,6 +97,9 @@ and I hope it has its strong sides.
 Future plans
 ========
 
+move ParamInfo inside `object CustomLogger`  (reduce visibility)
+rename SimplyLog to SimplyLoggable or something like that
+clean-up so that it would be easy to work with `net.pointsgame.macros._`
 Maybe AST printing, like "a + b" instead of "a.+(b)" ?
 
 

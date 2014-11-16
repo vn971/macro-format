@@ -14,7 +14,7 @@ private[macros] object MacroImpl {
 		val line: c.Expr[Int] = const(c.enclosingPosition.line)
 
 		// Now we should do smth like  params.map{p=> ParamInfo(...) }
-		// Unfortunately, we can't do that because of a Scala limitation,
+		// Unfortunately, we can't do that stupidly because of a Scala limitation,
 		// so we construct what we need step-by-step, converting to "Expression" each time
 		val seq = params.foldLeft {
 			reify(mutable.LinearSeq[ParamInfo]())
