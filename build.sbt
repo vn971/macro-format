@@ -1,12 +1,11 @@
-import com.typesafe.sbteclipse.core.EclipsePlugin.EclipseKeys
 
 name := "scala-macro-log"
 
-version := "0.9.2"
+version := "0.9.3"
 
-scalaVersion := "2.11.2"
+scalaVersion := "2.11.5"
 
-crossScalaVersions := Seq("2.11.2", "2.10.4")
+crossScalaVersions := Seq("2.11.5", "2.10.4")
 
 organization := "net.pointsgame"
 
@@ -14,16 +13,12 @@ description := "logging with additional information from the Scala compiler"
 
 scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature")
 
-EclipseKeys.withSource := true
-
 // fork := true
 
-libraryDependencies += "com.lihaoyi" %% "utest" % "0.2.3" % Test
+libraryDependencies += "com.lihaoyi" %% "utest" % "0.3.0" % Test
 
-testFrameworks += new TestFramework("utest.runner.JvmFramework")
+testFrameworks += new TestFramework("utest.runner.Framework")
 
 libraryDependencies <+= (scalaVersion)("org.scala-lang" % "scala-reflect" % _)
 
-conflictManager := ConflictManager("strict")
-
-//scala.scalajs.sbtplugin.ScalaJSPlugin.scalaJSSettings
+//enablePlugins(ScalaJSPlugin)

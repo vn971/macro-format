@@ -37,7 +37,7 @@ the macro-expanded output of a logging invocation:
 	implicit def customLogger = ...
 	log(i, user.id)
 =>
-	customLogger("MyTest.scala", 31, Seq(
+	customLogger( fileName = "MyTest.scala", line = 31, Seq(
 		ParamInfo(i, "i", "Int", isConstant = false),
 		ParamInfo(user.id, "user.id()", "Long", isConstant = false)
 	))  // the things varying at run-time are `i` and `user.id`
@@ -56,7 +56,7 @@ To use the project you currently have to:
 The library itself can be used after a single import statement:
 	import net.pointsgame.macros.SimpleLog._
 	val a = 1
-	prettyFormat("look who we have here", a + 2)
+	log("look who we have here", a + 2)
 
 
 FAQ

@@ -7,6 +7,4 @@
 /.settings
 
 #### sbt output
-/target
-/project/project
-/project/target
+target/
