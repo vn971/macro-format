@@ -101,6 +101,7 @@ move ParamInfo inside `object CustomLogger`  (reduce visibility)
 rename SimplyLog to SimplyLoggable or something like that
 clean-up so that it would be easy to work with `net.pointsgame.macros._`
 Maybe AST printing, like "a + b" instead of "a.+(b)" ?
+Or maybe string expansion?:  m"hello, ${a+b}"  =>  "hello, a+b = ***"
 
 
 Other notes
@@ -108,8 +109,7 @@ Other notes
 
 Main git repo: https://gitorious.org/macro-format/macro-format
 Github mirror: https://github.com/vn971/macro-format
-
 (Gitorious is just a free software alternative to github.)
 
 
-Copyright: Vasya Novikov 2014. License: GPL v3.
+Copyright: Vasya Novikov 2014-2015. License: Apache 2 (see license.txt for details).
