@@ -11,7 +11,7 @@ This can give you interesting abilities like mapping
 	format("authorizing", user.name, request.id)
 	=> authorizing, user.name() = 13, request.id() = 17
 
- * Compatibility with old logging code.:) And libraries like slf4j, ch.qos.logback, log4j,..
+ * Compatibility with old logging code. This library can work transparently with slf4j, ch.qos.logback, log4j,..
 
 
 Implementation

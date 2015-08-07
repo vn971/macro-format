@@ -13,4 +13,4 @@ Copyright 2014-2015 Vasya Novikov
    limitations under the License.
 
 
-personal comment from Vasya Novikov: I generally like GPL, but I think Apache2 is preferable for _libraries_.
+Personal comment from Vasya Novikov: I generally like GPL, but I think Apache2 is preferable for libraries, especially small ones.
