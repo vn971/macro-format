@@ -1,7 +1,5 @@
 package net.pointsgame.macros
 
-import java.text.SimpleDateFormat
-import java.util.Date
 import scala.collection.mutable
 import scala.language.experimental.macros
 
@@ -24,10 +22,10 @@ object CustomLoggerExamples {
 	}
 
 	private[macros] val logToString = new CustomLogger[String] {
-		override def apply(file: String, line: Int, params: Seq[ParamInfo]): String = {
+		override def apply(filename: String, line: Int, params: Seq[ParamInfo]): String = {
 			val sb = new mutable.StringBuilder
-			sb.append(dateFormatter.format(new Date()) + " ")
-			sb.append(file + ":" + line + " - ")
+			sb.append(PlatformSpecific.formatDate(System.currentTimeMillis()))
+			sb.append(" ").append(filename).append(":").append(line).append(" - ")
 			var isHead = true
 			params.foreach { param =>
 				if (!isHead) sb.append(", ")
@@ -42,7 +40,5 @@ object CustomLoggerExamples {
 		}
 	}
 
-
-	val dateFormatter = new SimpleDateFormat("HH:mm:ss.SSS")
 }
 
